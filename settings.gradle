@@ -1,0 +1,3 @@
+rootProject.name = 'mockl-language'
+include 'mockl-core'
+include 'mockl-obp3'

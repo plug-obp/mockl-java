@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/plug-obp/obp3-core")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(23))
+    }
+}
+
+dependencies {
+    implementation project(':mockl-core')
+    implementation 'org.obpcdl:obp3-runtime:1.0.+'
+    implementation 'org.obpcdl:obp3-algos:1.0.+'
+    implementation 'org.obpcdl:gpsl-core:1.1.0-main.+'
+    implementation 'org.obpcdl:gpsl-modelchecker:1.1.0-main.+'
+    implementation 'org.obpcdl:rege-core:1.1.0-main.+'
+    implementation 'org.obpcdl:rege-modelchecker:1.1.0-main.+'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Publishing metadata (configuration inherited from root project)
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                name = 'Mockl OBP3 Bridge'
+                description = 'Mock language OBP3 modelchecker '
+            }
+        }
+    }
+}
+
+task packageZip(type: Zip) {
+    from configurations.runtimeClasspath
+    from("$buildDir/libs") {
+        include '*.jar'
+    }
+    archiveFileName = 'app-with-deps.zip'
+    destinationDirectory = file("$buildDir/distributions")
+}
