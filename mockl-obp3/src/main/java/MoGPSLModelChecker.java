@@ -13,3 +13,14 @@ public class MoGPSLModelChecker {
         System.out.println(result);
     }
 }
+
+/// G (|batteryCharge' == batteryCharge + 1|)
+
+/// Step: {
+/// source: SysMLConfiguration(...batteryCharge = 80 ... successions={ 3228X239 } flows={} ) ,
+/// action: INode (XBehAction) | Stutter
+/// target: SysMLConfiguration(...batteryCharge = 81)
+/// }
+
+
+/// G F | S(UUID)  |   |S'(UUID)|
