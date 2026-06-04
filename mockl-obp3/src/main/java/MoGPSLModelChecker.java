@@ -4,10 +4,11 @@ public class MoGPSLModelChecker {
 
     public static void main(String[] args) {
         var semantics = new MoSemantics();
-        String prop = "prop=G true";
+        String prop = "prop=G |model.action.state.goes.to(34)| && |otherThing|";
         var checker = new StepModelChecker<>(
                 semantics,
-                (e, step) -> true,
+                (e, step) ->  {
+                    System.out.println("----- <expression = "+ e + ", step = " + step + ">"); return true; },
                 prop);
         var result =  checker.modelChecker().runAlone();
         System.out.println(result);
